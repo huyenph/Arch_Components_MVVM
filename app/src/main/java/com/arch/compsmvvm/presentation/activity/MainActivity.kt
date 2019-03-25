@@ -1,8 +1,8 @@
-package com.arch.compsmvvm
+package com.arch.compsmvvm.presentation.activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import com.arch.compsmvvm.R
 
 class MainActivity : AppCompatActivity() {
 
