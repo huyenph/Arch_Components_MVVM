@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import com.arch.compsmvvm.R
 import kotlin.collections.ArrayList
 
-class BaseAdapter(
+open class BaseAdapter(
     private val layoutRes: Int,
     private val layoutHeaderRes: Int,
     recyclerView: RecyclerView,

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        >
+>
     <data>
         <variable name="viewModel"
                   type="com.arch.compsmvvm.presentation.activity.MainViewModel"/>
@@ -20,16 +20,13 @@
                 android:layout_height="0dp"
                 android:background="@color/white"/>
 
-        <android.support.v4.widget.NestedScrollView
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/actMain_rvMenu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
                 android:background="@color/colorPrimary"
-                android:layout_gravity="start">
-
-
-
-        </android.support.v4.widget.NestedScrollView>
+                android:layout_gravity="start"/>
 
     </android.support.v4.widget.DrawerLayout>
 </layout>

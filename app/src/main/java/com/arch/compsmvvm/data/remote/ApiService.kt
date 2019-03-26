@@ -8,12 +8,10 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface ApiService {
-    @GET("users")
-    fun requestUserSE(
-        @Query("order") order: String,
-        @Query("sort") sort: String,
-        @Query("site") site: String,
-        @Query("page") page: Int
+    @GET("sites")
+    fun requestSite(
+        @Query("page") order: Int,
+        @Query("pagesize") sort: Int
     ): Observable<JsonObject>
 
     @GET("users")
