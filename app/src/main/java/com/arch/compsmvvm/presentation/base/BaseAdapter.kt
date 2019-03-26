@@ -71,11 +71,22 @@ open class BaseAdapter(
                 else -> position
             }
         } else {
-            when (position) {
-                0 -> if (layoutHeaderRes != 0) TYPE_HEADER else position
-                mItemCount - 1 -> if (layoutFooterRes != 0) TYPE_FOOTER else position
-                else -> position
+            if (mItemCount == 2) {
+                if (position == 0) TYPE_HEADER else TYPE_FOOTER
+            } else if (mItemCount == 1) {
+                if (layoutHeaderRes != 0) TYPE_HEADER else TYPE_FOOTER
+            } else {
+                when (position) {
+                    0 -> if (layoutHeaderRes != 0) TYPE_HEADER else position
+                    mItemCount - 1 -> if (layoutFooterRes != 0) TYPE_FOOTER else position
+                    else -> position
+                }
             }
+//            when (position) {
+//                0 -> if (layoutHeaderRes != 0) TYPE_HEADER else position
+//                mItemCount - 1 -> if (layoutFooterRes != 0) TYPE_FOOTER else position
+//                else -> position
+//            }
         }
     }
 
@@ -139,6 +150,6 @@ open class BaseAdapter(
 
     class HeaderViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root)
     class FooterViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root)
-    class ItemViewHolder(val bindind: ViewDataBinding) : RecyclerView.ViewHolder(bindind.root)
+    class ItemViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root)
     class LoadingViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root)
 }

@@ -27,7 +27,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun init() {
-        menuAdapter = MenuAdapter(actMain_rvMenu, null)
+        menuAdapter = MenuAdapter(actMain_rvMenu, null, null)
         actMain_rvMenu.run {
             layoutManager = menuLm
             setHasFixedSize(true)
