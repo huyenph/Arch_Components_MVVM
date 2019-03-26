@@ -10,7 +10,7 @@ open class BaseFragment: Fragment() {
 
     fun configToolbarMain(view: View, title: String?) {
         if (activity is BaseActivity) {
-//            (activity as BaseActivity).configToolbarMain(view, title)
+            (activity as BaseActivity).configToolbarMain(view, title)
         }
     }
 

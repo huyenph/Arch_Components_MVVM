@@ -15,7 +15,8 @@
             android:supportsRtl="true"
             android:usesCleartextTraffic="true"
             android:theme="@style/AppTheme"
-            tools:ignore="AllowBackup,GoogleAppIndexingWarning" tools:targetApi="m">
+            tools:ignore="AllowBackup,GoogleAppIndexingWarning"
+            tools:targetApi="m">
         <activity android:name=".presentation.activity.MainActivity"
                   android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

@@ -12,7 +12,7 @@
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|enterAlways">
 
-        <ImageView android:id="@+id/tb_ivNav"
+        <ImageView android:id="@+id/tb_ivBack"
                    android:layout_width="wrap_content"
                    android:layout_height="0dp"
                    android:src="@drawable/ic_arrow_back"
@@ -31,7 +31,7 @@
                   android:layout_marginEnd="@dimen/_15dp"
                   android:ellipsize="end"
                   android:maxLines="1"
-                  app:layout_constraintStart_toEndOf="@id/tb_ivNav"
+                  app:layout_constraintStart_toEndOf="@id/tb_ivBack"
                   app:layout_constraintTop_toTopOf="parent"
                   app:layout_constraintEnd_toEndOf="parent"
                   app:layout_constraintBottom_toBottomOf="parent"/>
