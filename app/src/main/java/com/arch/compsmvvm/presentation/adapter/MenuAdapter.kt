@@ -8,7 +8,7 @@ import com.arch.compsmvvm.presentation.base.BaseAdapter
 class MenuAdapter(
     recyclerView: RecyclerView,
     adapterListener: BaseAdapter.AdapterListener?
-) : BaseAdapter(R.layout.item_site, 0, recyclerView, null, adapterListener) {
+) : BaseAdapter(R.layout.item_site, 0, 0, recyclerView, null, adapterListener) {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ItemViewHolder) {
             val item = items[position]

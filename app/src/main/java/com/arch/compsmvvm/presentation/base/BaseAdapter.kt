@@ -12,14 +12,17 @@ import kotlin.collections.ArrayList
 open class BaseAdapter(
     private val layoutRes: Int,
     private val layoutHeaderRes: Int,
+    private val layoutFooterRes: Int,
     recyclerView: RecyclerView,
     private val layoutManager: GridLayoutManager?,
     private val adapterListener: AdapterListener?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var items: MutableList<Any> = ArrayList()
+    var mItemCount = 0
     var isLoading = true
 
     companion object {
+        const val TYPE_FOOTER = 777
         const val TYPE_HEADER = 888
         const val TYPE_LOADING = 999
     }
@@ -49,22 +52,30 @@ open class BaseAdapter(
     }
 
     override fun getItemCount(): Int {
-        return if (layoutManager == null) {
-            items.size
+        mItemCount = if (layoutHeaderRes != 0 && layoutFooterRes != 0) {
+            if (layoutManager != null) items.size + 3 else items.size + 2
+        } else if (layoutHeaderRes != 0 || layoutFooterRes != 0) {
+            if (layoutManager != null) items.size + 2 else items.size + 1
         } else {
-            if (items.size == 0) items.size else items.size + 1
+            if (layoutManager != null) items.size + 1 else items.size
         }
+        return mItemCount
     }
 
     override fun getItemViewType(position: Int): Int {
         return if (layoutManager != null) {
             when (position) {
                 0 -> if (layoutHeaderRes != 0) TYPE_HEADER else position
-                layoutManager.itemCount - 1 -> TYPE_LOADING
+                mItemCount - 1 -> TYPE_LOADING
+                mItemCount - 2 -> if (layoutFooterRes != 0) TYPE_FOOTER else position
                 else -> position
             }
         } else {
-            position
+            when (position) {
+                0 -> if (layoutHeaderRes != 0) TYPE_HEADER else position
+                mItemCount - 1 -> if (layoutFooterRes != 0) TYPE_FOOTER else position
+                else -> position
+            }
         }
     }
 
@@ -73,6 +84,11 @@ open class BaseAdapter(
             TYPE_HEADER -> HeaderViewHolder(
                 DataBindingUtil.inflate(
                     LayoutInflater.from(viewGroup.context), layoutHeaderRes, viewGroup, false
+                )
+            )
+            TYPE_FOOTER -> FooterViewHolder(
+                DataBindingUtil.inflate(
+                    LayoutInflater.from(viewGroup.context), layoutFooterRes, viewGroup, false
                 )
             )
             TYPE_LOADING -> LoadingViewHolder(
@@ -122,6 +138,7 @@ open class BaseAdapter(
     }
 
     class HeaderViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root)
+    class FooterViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root)
     class ItemViewHolder(val bindind: ViewDataBinding) : RecyclerView.ViewHolder(bindind.root)
     class LoadingViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root)
 }
