@@ -29,7 +29,7 @@ class MainActivity : BaseActivity(), BaseAdapter.AdapterListener {
     }
 
     private fun init() {
-        menuAdapter = MenuAdapter(actMain_rvMenu, R.layout.view_header_menu, 0, menuLm, this)
+        menuAdapter = MenuAdapter(actMain_rvMenu, 0, R.layout.view_footer_menu, null, this)
         actMain_rvMenu.run {
             layoutManager = menuLm
             setHasFixedSize(true)

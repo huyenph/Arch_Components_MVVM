@@ -23,6 +23,7 @@ open class BaseAdapter(
     var isEndList = false
 
     companion object {
+        const val TYPE_BLANK = 666
         const val TYPE_FOOTER = 777
         const val TYPE_HEADER = 888
         const val TYPE_LOADING = 999
@@ -53,32 +54,34 @@ open class BaseAdapter(
     }
 
     override fun getItemCount(): Int {
-        mItemCount = if (headerRes != 0 && footerRes != 0) {
-            if (layoutManager != null) items.size + 3 else items.size + 2
-        } else if (headerRes != 0 || footerRes != 0) {
-            if (layoutManager != null) items.size + 2 else items.size + 1
-        } else {
-            if (layoutManager != null) items.size + 1 else items.size
+        mItemCount = when {
+            headerRes != 0 && footerRes != 0 ->
+                if (layoutManager != null) items.size + 3 else items.size + 2
+            headerRes != 0 || footerRes != 0 ->
+                if (layoutManager != null) items.size + 2 else items.size + 1
+            else ->
+                if (layoutManager != null) items.size + 1 else items.size
         }
         return mItemCount
     }
 
     override fun getItemViewType(position: Int): Int {
         return if (layoutManager != null) {
-            when(mItemCount) {
+            when (mItemCount) {
                 3 -> {
                     when (position) {
                         0 -> TYPE_HEADER
                         1 -> TYPE_FOOTER
-                        else -> TYPE_LOADING
+                        else -> TYPE_BLANK
                     }
                 }
-                2-> {
-                    when(position) {
+                2 -> {
+                    when (position) {
                         0 -> if (headerRes != 0) TYPE_HEADER else TYPE_FOOTER
-                        else -> TYPE_LOADING
+                        else -> TYPE_BLANK
                     }
                 }
+                1 -> TYPE_BLANK
                 else -> {
                     when (position) {
                         0 -> if (headerRes != 0) TYPE_HEADER else position
@@ -118,6 +121,11 @@ open class BaseAdapter(
             TYPE_LOADING -> LoadingViewHolder(
                 DataBindingUtil.inflate(
                     LayoutInflater.from(viewGroup.context), R.layout.view_loadmore, viewGroup, false
+                )
+            )
+            TYPE_BLANK -> BlankViewHolder(
+                DataBindingUtil.inflate(
+                    LayoutInflater.from(viewGroup.context), R.layout.view_blank, viewGroup, false
                 )
             )
             else -> ItemViewHolder(
@@ -165,4 +173,5 @@ open class BaseAdapter(
     class FooterViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root)
     class ItemViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root)
     class LoadingViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root)
+    class BlankViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root)
 }

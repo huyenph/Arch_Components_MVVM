@@ -18,11 +18,7 @@ class MenuAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ItemViewHolder -> {
-                val item: Any = if (headerRes != 0) {
-                    items[position - 1]
-                } else {
-                    items[position]
-                }
+                val item: Any = items[if (headerRes != 0) position - 1 else position]
                 holder.binding.setVariable(BR.site, item)
                 holder.binding.executePendingBindings()
             }
@@ -34,6 +30,9 @@ class MenuAdapter(
             }
             is LoadingViewHolder -> {
                 holder.binding.root.vLoadMore.visibility = if (isEndList) View.GONE else View.VISIBLE
+            }
+            is BlankViewHolder -> {
+
             }
         }
     }
