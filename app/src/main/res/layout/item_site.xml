@@ -12,7 +12,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/_5dp"
-            android:paddingTop="@dimen/_5dp">
+            android:paddingTop="@dimen/_5dp"
+            android:background="?android:selectableItemBackground">
 
         <ImageView android:id="@+id/itSite_ivAvatar"
                    android:layout_width="@dimen/_50dp"
@@ -24,13 +25,18 @@
                    tools:ignore="ContentDescription"/>
 
         <TextView android:id="@+id/itSite_tvTitle"
-                  android:layout_width="wrap_content"
+                  android:layout_width="0dp"
                   android:layout_height="wrap_content"
                   android:textColor="@color/white"
                   android:textSize="18sp"
                   android:text="@{site.name}"
+                  android:maxLines="1"
+                  android:ellipsize="end"
+                  android:gravity="start"
                   android:layout_marginStart="@dimen/_10dp"
+                  android:layout_marginEnd="@dimen/_10dp"
                   app:layout_constraintTop_toTopOf="parent"
+                  app:layout_constraintEnd_toEndOf="parent"
                   app:layout_constraintStart_toEndOf="@id/itSite_ivAvatar"
                   app:layout_constraintBottom_toBottomOf="parent"/>
 

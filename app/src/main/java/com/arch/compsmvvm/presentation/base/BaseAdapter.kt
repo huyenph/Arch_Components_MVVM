@@ -20,6 +20,7 @@ open class BaseAdapter(
     var items: MutableList<Any> = ArrayList()
     var mItemCount = 0
     var isLoading = true
+    var isEndList = false
 
     companion object {
         const val TYPE_FOOTER = 777
@@ -64,11 +65,28 @@ open class BaseAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return if (layoutManager != null) {
-            when (position) {
-                0 -> if (headerRes != 0) TYPE_HEADER else position
-                mItemCount - 1 -> TYPE_LOADING
-                mItemCount - 2 -> if (footerRes != 0) TYPE_FOOTER else position
-                else -> position
+            when(mItemCount) {
+                3 -> {
+                    when (position) {
+                        0 -> TYPE_HEADER
+                        1 -> TYPE_FOOTER
+                        else -> TYPE_LOADING
+                    }
+                }
+                2-> {
+                    when(position) {
+                        0 -> if (headerRes != 0) TYPE_HEADER else TYPE_FOOTER
+                        else -> TYPE_LOADING
+                    }
+                }
+                else -> {
+                    when (position) {
+                        0 -> if (headerRes != 0) TYPE_HEADER else position
+                        mItemCount - 1 -> TYPE_LOADING
+                        mItemCount - 2 -> if (footerRes != 0) TYPE_FOOTER else position
+                        else -> position
+                    }
+                }
             }
         } else {
             when (mItemCount) {
@@ -82,17 +100,6 @@ open class BaseAdapter(
                     }
                 }
             }
-//            if (mItemCount == 2) {
-//                if (position == 0) TYPE_HEADER else TYPE_FOOTER
-//            } else if (mItemCount == 1) {
-//                if (headerRes != 0) TYPE_HEADER else TYPE_FOOTER
-//            } else {
-//                when (position) {
-//                    0 -> if (headerRes != 0) TYPE_HEADER else position
-//                    mItemCount - 1 -> if (footerRes != 0) TYPE_FOOTER else position
-//                    else -> position
-//                }
-//            }
         }
     }
 

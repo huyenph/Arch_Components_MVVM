@@ -14,11 +14,11 @@ import io.reactivex.schedulers.Schedulers
 class MainViewModel(private val repository: Repository) : BaseViewModel(repository) {
     var menuLive: SingleLiveData<MutableList<SiteItemResponse>>? = null
 
-    fun loadMenu() {
+    fun loadMenu(page: Int) {
         if (menuLive == null) {
             menuLive = SingleLiveData()
         }
-        val disposables = repository.getMenu(1, 10)
+        val disposables = repository.getMenu(page, 15)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({

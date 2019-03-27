@@ -2,9 +2,11 @@ package com.arch.compsmvvm.presentation.adapter
 
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import com.arch.compsmvvm.BR
 import com.arch.compsmvvm.R
 import com.arch.compsmvvm.presentation.base.BaseAdapter
+import kotlinx.android.synthetic.main.view_loadmore.view.*
 
 class MenuAdapter(
     recyclerView: RecyclerView,
@@ -29,6 +31,9 @@ class MenuAdapter(
             }
             is HeaderViewHolder -> {
 
+            }
+            is LoadingViewHolder -> {
+                holder.binding.root.vLoadMore.visibility = if (isEndList) View.GONE else View.VISIBLE
             }
         }
     }
