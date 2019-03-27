@@ -10,9 +10,9 @@ import com.arch.compsmvvm.R
 import kotlin.collections.ArrayList
 
 open class BaseAdapter(
-    private val layoutRes: Int,
-    private val layoutHeaderRes: Int,
-    private val layoutFooterRes: Int,
+    private val mainRes: Int,
+    private val headerRes: Int,
+    private val footerRes: Int,
     recyclerView: RecyclerView,
     private val layoutManager: GridLayoutManager?,
     private val adapterListener: AdapterListener?
@@ -52,9 +52,9 @@ open class BaseAdapter(
     }
 
     override fun getItemCount(): Int {
-        mItemCount = if (layoutHeaderRes != 0 && layoutFooterRes != 0) {
+        mItemCount = if (headerRes != 0 && footerRes != 0) {
             if (layoutManager != null) items.size + 3 else items.size + 2
-        } else if (layoutHeaderRes != 0 || layoutFooterRes != 0) {
+        } else if (headerRes != 0 || footerRes != 0) {
             if (layoutManager != null) items.size + 2 else items.size + 1
         } else {
             if (layoutManager != null) items.size + 1 else items.size
@@ -65,27 +65,33 @@ open class BaseAdapter(
     override fun getItemViewType(position: Int): Int {
         return if (layoutManager != null) {
             when (position) {
-                0 -> if (layoutHeaderRes != 0) TYPE_HEADER else position
+                0 -> if (headerRes != 0) TYPE_HEADER else position
                 mItemCount - 1 -> TYPE_LOADING
-                mItemCount - 2 -> if (layoutFooterRes != 0) TYPE_FOOTER else position
+                mItemCount - 2 -> if (footerRes != 0) TYPE_FOOTER else position
                 else -> position
             }
         } else {
-            if (mItemCount == 2) {
-                if (position == 0) TYPE_HEADER else TYPE_FOOTER
-            } else if (mItemCount == 1) {
-                if (layoutHeaderRes != 0) TYPE_HEADER else TYPE_FOOTER
-            } else {
-                when (position) {
-                    0 -> if (layoutHeaderRes != 0) TYPE_HEADER else position
-                    mItemCount - 1 -> if (layoutFooterRes != 0) TYPE_FOOTER else position
-                    else -> position
+            when (mItemCount) {
+                2 -> if (position == 0) TYPE_HEADER else TYPE_FOOTER
+                1 -> if (headerRes != 0) TYPE_HEADER else TYPE_FOOTER
+                else -> {
+                    when (position) {
+                        0 -> if (headerRes != 0) TYPE_HEADER else position
+                        mItemCount - 1 -> if (footerRes != 0) TYPE_FOOTER else position
+                        else -> position
+                    }
                 }
             }
-//            when (position) {
-//                0 -> if (layoutHeaderRes != 0) TYPE_HEADER else position
-//                mItemCount - 1 -> if (layoutFooterRes != 0) TYPE_FOOTER else position
-//                else -> position
+//            if (mItemCount == 2) {
+//                if (position == 0) TYPE_HEADER else TYPE_FOOTER
+//            } else if (mItemCount == 1) {
+//                if (headerRes != 0) TYPE_HEADER else TYPE_FOOTER
+//            } else {
+//                when (position) {
+//                    0 -> if (headerRes != 0) TYPE_HEADER else position
+//                    mItemCount - 1 -> if (footerRes != 0) TYPE_FOOTER else position
+//                    else -> position
+//                }
 //            }
         }
     }
@@ -94,12 +100,12 @@ open class BaseAdapter(
         return when (viewType) {
             TYPE_HEADER -> HeaderViewHolder(
                 DataBindingUtil.inflate(
-                    LayoutInflater.from(viewGroup.context), layoutHeaderRes, viewGroup, false
+                    LayoutInflater.from(viewGroup.context), headerRes, viewGroup, false
                 )
             )
             TYPE_FOOTER -> FooterViewHolder(
                 DataBindingUtil.inflate(
-                    LayoutInflater.from(viewGroup.context), layoutFooterRes, viewGroup, false
+                    LayoutInflater.from(viewGroup.context), footerRes, viewGroup, false
                 )
             )
             TYPE_LOADING -> LoadingViewHolder(
@@ -109,7 +115,7 @@ open class BaseAdapter(
             )
             else -> ItemViewHolder(
                 DataBindingUtil.inflate(
-                    LayoutInflater.from(viewGroup.context), layoutRes, viewGroup, false
+                    LayoutInflater.from(viewGroup.context), mainRes, viewGroup, false
                 )
             )
         }
