@@ -7,4 +7,6 @@ import io.reactivex.Observable
 
 class AppRepository(private val apiService: ApiService, private val dbDao: DBDao) : Repository {
     override fun getMenu(page: Int, pageSize: Int): Observable<JsonObject> = apiService.requestSite(page, pageSize)
+
+    override fun getQuestion(site: String, page: Int): Observable<JsonObject> = apiService.requestQuestion(site, page)
 }

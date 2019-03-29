@@ -11,6 +11,7 @@ import com.arch.compsmvvm.presentation.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import com.arch.compsmvvm.presentation.adapter.MenuAdapter
 import com.arch.compsmvvm.presentation.base.BaseAdapter
+import com.arch.compsmvvm.presentation.fragment.main.MainFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity(), BaseAdapter.AdapterListener {
@@ -29,6 +30,7 @@ class MainActivity : BaseActivity(), BaseAdapter.AdapterListener {
     }
 
     private fun init() {
+        addFragment(MainFragment(), true, false)
         menuAdapter = MenuAdapter(actMain_rvMenu, 0, R.layout.view_footer_menu, null, this)
         actMain_rvMenu.run {
             layoutManager = menuLm
@@ -36,6 +38,10 @@ class MainActivity : BaseActivity(), BaseAdapter.AdapterListener {
             adapter = menuAdapter
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
         vm.loadMenu(page)
         vm.menuLive!!.observe(this, Observer {
             if (it != null) {

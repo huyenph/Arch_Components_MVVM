@@ -4,16 +4,26 @@ import android.databinding.BindingAdapter
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 
-private val requestOption = RequestOptions().transforms(CenterCrop(), RoundedCorners(20))
+private val roundedCornerOption = RequestOptions().transforms(CenterCrop(), RoundedCorners(20))
+private val circleOption = RequestOptions().transforms(CenterCrop(), CircleCrop())
 
 @BindingAdapter("url_roundedCorner")
 fun loadImageUrlRoundedCorner(imageView: ImageView, url: String) {
     Glide.with(imageView.context)
         .load(url)
-        .apply(requestOption)
+        .apply(roundedCornerOption)
+        .into(imageView)
+}
+
+@BindingAdapter("url_circle")
+fun loadImageUrlCircle(imageView: ImageView, url: String) {
+    Glide.with(imageView.context)
+        .load(url)
+        .apply(circleOption)
         .into(imageView)
 }
 

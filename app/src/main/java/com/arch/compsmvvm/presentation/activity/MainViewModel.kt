@@ -18,7 +18,7 @@ class MainViewModel(private val repository: Repository) : BaseViewModel(reposito
         if (menuLive == null) {
             menuLive = SingleLiveData()
         }
-        val disposables = repository.getMenu(page, 15)
+        val disposables = repository.getMenu(page, 10)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -30,5 +30,6 @@ class MainViewModel(private val repository: Repository) : BaseViewModel(reposito
             }, {
                 Log.d("aaa", it.printStackTrace().toString())
             })
+        compositeDisposable.add(disposables)
     }
 }
