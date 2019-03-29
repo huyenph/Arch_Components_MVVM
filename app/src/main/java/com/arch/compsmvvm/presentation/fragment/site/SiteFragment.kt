@@ -14,6 +14,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import com.arch.compsmvvm.databinding.FragmentSiteBinding
 import com.arch.compsmvvm.presentation.adapter.SiteAdapter
 import com.arch.compsmvvm.presentation.base.BaseAdapter
+import com.arch.compsmvvm.presentation.fragment.question.QuestionFragment
 import kotlinx.android.synthetic.main.fragment_site.view.*
 
 class SiteFragment : BaseFragment(), BaseAdapter.AdapterListener {
@@ -55,7 +56,7 @@ class SiteFragment : BaseFragment(), BaseAdapter.AdapterListener {
         siteLm = GridLayoutManager(context, 2)
         siteLm.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(p0: Int): Int {
-                return when(siteAdapter!!.getItemViewType(p0)) {
+                return when (siteAdapter!!.getItemViewType(p0)) {
                     BaseAdapter.TYPE_LOADING -> 2
                     else -> 1
                 }
@@ -79,7 +80,13 @@ class SiteFragment : BaseFragment(), BaseAdapter.AdapterListener {
     }
 
     override fun onItemClick(`object`: Any, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (`object` is SiteItemResponse) {
+            addFragment(
+                QuestionFragment.newInstance(`object`.name!!, `object`.apiSiteParameter!!),
+                addToBackStack = true,
+                animation = true
+            )
+        }
     }
 
     override fun onItemLongClick(`object`: Any, position: Int): Boolean {

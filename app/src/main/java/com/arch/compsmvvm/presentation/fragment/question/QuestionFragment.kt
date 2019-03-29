@@ -45,6 +45,32 @@ class QuestionFragment: BaseFragment(), BaseAdapter.AdapterListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.fmQuestion_rvContent.run {
+            layoutManager = questionLm
+
+            setHasFixedSize(true)
+            adapter = questionAdapter
+        }
+    }
+
+    private fun init() {
+        if (arguments != null) {
+            configToolbar(mView, arguments!!.getString("name", ""), null)
+            siteParam = arguments!!.getString("param", "")
+        }
+        questionLm = GridLayoutManager(context, 1)
+        if (questionAdapter == null) {
+            questionAdapter = QuestionAdapter(mView.fmQuestion_rvContent, questionLm, this)
+        }
+
+        mView.fmQuestion_srl.setOnRefreshListener {
+            page = 1
+            questions.clear()
+            questionAdapter!!.set(questions)
+            vm.getQuestion(siteParam, page, true)
+            mView.fmQuestion_srl.isRefreshing = false
+        }
+
         vm.getQuestion(siteParam, page, true)
         vm.questionLive!!.observe(this, Observer {
             if (it != null) {
@@ -58,29 +84,6 @@ class QuestionFragment: BaseFragment(), BaseAdapter.AdapterListener {
                 }
             }
         })
-    }
-
-    private fun init() {
-        if (arguments != null) {
-            configToolbar(mView, arguments!!.getString("name", ""), null)
-            siteParam = arguments!!.getString("param", "")
-        }
-        questionLm = GridLayoutManager(context, 1)
-        if (questionAdapter == null) {
-            questionAdapter = QuestionAdapter(mView.fmQuestion_rvContent, questionLm, this)
-        }
-        mView.fmQuestion_rvContent.run {
-            layoutManager = questionLm
-            adapter = questionAdapter
-            setHasFixedSize(true)
-        }
-        mView.fmQuestion_srl.setOnRefreshListener {
-            page = 1
-            questions.clear()
-            questionAdapter!!.set(questions)
-            vm.getQuestion(siteParam, page, true)
-            mView.fmQuestion_srl.isRefreshing = false
-        }
     }
 
     override fun onItemClick(`object`: Any, position: Int) {
