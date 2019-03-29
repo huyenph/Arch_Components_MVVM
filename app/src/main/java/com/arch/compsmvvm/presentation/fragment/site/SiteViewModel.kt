@@ -30,7 +30,7 @@ class SiteViewModel(private val repository: Repository): BaseViewModel(repositor
                 hideMessage()
             }, {
                 dismissLoading()
-                showMessage("Error")
+                showMessage(it.message!!)
             })
         compositeDisposable.add(disposables)
     }

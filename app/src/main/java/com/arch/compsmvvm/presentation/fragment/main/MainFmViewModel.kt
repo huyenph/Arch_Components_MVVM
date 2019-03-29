@@ -29,7 +29,7 @@ class MainFmViewModel(private val repository: Repository) : BaseViewModel(reposi
                 hideMessage()
             }, {
                 dismissLoading()
-                showMessage("Error")
+                showMessage(it.message!!)
             })
         compositeDisposable.add(disposables)
     }

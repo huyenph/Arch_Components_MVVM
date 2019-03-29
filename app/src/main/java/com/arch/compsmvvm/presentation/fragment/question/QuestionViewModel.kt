@@ -1,6 +1,8 @@
 package com.arch.compsmvvm.presentation.fragment.question
 
+import android.util.Log
 import com.arch.compsmvvm.common.helper.SingleLiveData
+import com.arch.compsmvvm.data.remote.response.error.ErrorResponse
 import com.arch.compsmvvm.data.remote.response.question.QuestionItemResponse
 import com.arch.compsmvvm.data.remote.response.question.QuestionResponse
 import com.arch.compsmvvm.data.repository.Repository
@@ -9,6 +11,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import retrofit2.HttpException
 
 class QuestionViewModel(private val repository: Repository): BaseViewModel(repository) {
     var questionLive: SingleLiveData<MutableList<QuestionItemResponse>>? = null
@@ -28,8 +31,11 @@ class QuestionViewModel(private val repository: Repository): BaseViewModel(repos
                 dismissLoading()
                 hideMessage()
             }, {
+//                Log.d("aaa", it.printStackTrace().toString())
+//                val type = object : TypeToken<ErrorResponse>(){}.type
+//                val error = Gson().fromJson((it as HttpException).response().errorBody(), type) as ErrorResponse
                 dismissLoading()
-                showMessage("Error")
+                showMessage(it.message!!)
             })
         compositeDisposable.add(disposables)
     }
