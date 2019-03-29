@@ -14,6 +14,7 @@ import com.arch.compsmvvm.presentation.adapter.MenuAdapter
 import com.arch.compsmvvm.presentation.base.BaseAdapter
 import com.arch.compsmvvm.presentation.fragment.main.MainFragment
 import com.arch.compsmvvm.presentation.fragment.question.QuestionFragment
+import com.arch.compsmvvm.presentation.fragment.site.SiteFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity(), BaseAdapter.AdapterListener {
@@ -32,7 +33,7 @@ class MainActivity : BaseActivity(), BaseAdapter.AdapterListener {
     }
 
     private fun init() {
-        addFragment(MainFragment(), true, false)
+        addFragment(MainFragment(), addToBackStack = true, animation = false)
         menuAdapter = MenuAdapter(actMain_rvMenu, 0, R.layout.view_footer_menu, null, this)
         actMain_rvMenu.run {
             layoutManager = menuLm
@@ -69,6 +70,8 @@ class MainActivity : BaseActivity(), BaseAdapter.AdapterListener {
                     animation = true
                 )
             }
+        } else if (`object` is String) {
+            addFragment(SiteFragment(), addToBackStack = true, animation = true)
         }
     }
 

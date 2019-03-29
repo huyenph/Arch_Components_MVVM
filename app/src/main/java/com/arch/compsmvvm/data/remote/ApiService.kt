@@ -17,24 +17,27 @@ interface ApiService {
     @GET("questions")
     fun requestQuestion(@Query("site") site: String, @Query("page") page: Int): Observable<JsonObject>
 
-    @GET("users")
-    fun requestUser(
-        @Query("order") order: String,
-        @Query("sort") sort: String,
-        @Query("site") site: String,
-        @Query("page") page: Int
-    ): Call<JsonObject>
+    @GET("sites")
+    fun requestAllSite(@Query("page") page: Int): Observable<JsonObject>
 
-    @FormUrlEncoded
-    @POST("key, object")
-    fun requestNormal(@FieldMap body: Map<String, Any>): Observable<JsonObject>
-
-    @POST("storeList")
-    fun requestList(@Body list: List<BaseModel>): Observable<JsonObject>
-
-    @GET("not params")
-    fun requestNotParams(): Observable<JsonObject>
-
-    @POST("upload file")
-    fun requestFile(@Body file: RequestBody): Observable<JsonObject>
+//    @GET("users")
+//    fun requestUser(
+//        @Query("order") order: String,
+//        @Query("sort") sort: String,
+//        @Query("site") site: String,
+//        @Query("page") page: Int
+//    ): Call<JsonObject>
+//
+//    @FormUrlEncoded
+//    @POST("key, object")
+//    fun requestNormal(@FieldMap body: Map<String, Any>): Observable<JsonObject>
+//
+//    @POST("storeList")
+//    fun requestList(@Body list: List<BaseModel>): Observable<JsonObject>
+//
+//    @GET("not params")
+//    fun requestNotParams(): Observable<JsonObject>
+//
+//    @POST("upload file")
+//    fun requestFile(@Body file: RequestBody): Observable<JsonObject>
 }

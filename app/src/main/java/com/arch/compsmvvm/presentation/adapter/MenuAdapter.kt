@@ -6,7 +6,8 @@ import android.view.View
 import com.arch.compsmvvm.BR
 import com.arch.compsmvvm.R
 import com.arch.compsmvvm.presentation.base.BaseAdapter
-import kotlinx.android.synthetic.main.item_site.view.*
+import kotlinx.android.synthetic.main.item_menu.view.*
+import kotlinx.android.synthetic.main.view_footer_menu.view.*
 import kotlinx.android.synthetic.main.view_loadmore.view.*
 
 class MenuAdapter(
@@ -15,20 +16,23 @@ class MenuAdapter(
     footerRes: Int,
     layoutManager: GridLayoutManager?,
     private val adapterListener: BaseAdapter.AdapterListener?
-) : BaseAdapter(R.layout.item_site, headerRes, footerRes, recyclerView, layoutManager, adapterListener) {
+) : BaseAdapter(R.layout.item_menu, headerRes, footerRes, recyclerView, layoutManager, adapterListener) {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ItemViewHolder -> {
                 val item: Any = items[if (headerRes != 0) position - 1 else position]
-                holder.binding.setVariable(BR.site, item)
+                holder.binding.setVariable(BR.menu, item)
                 holder.binding.executePendingBindings()
                 val v = holder.binding.root
-                v.itSite_clContainer.setOnClickListener {
+                v.itMenu_clContainer.setOnClickListener {
                     adapterListener?.onItemClick(item, position)
                 }
             }
             is FooterViewHolder -> {
-
+                val v = holder.binding.root
+                v.vFooterMenu_clContainer.setOnClickListener {
+                    adapterListener?.onItemClick("footer", position)
+                }
             }
             is HeaderViewHolder -> {
 
