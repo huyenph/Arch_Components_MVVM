@@ -60,7 +60,7 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 
-    fun configToolbar(view: View, title: String?, option: Boolean, listener: BackStackListener?) {
+    fun configToolbar(view: View, title: String?, listener: BackStackListener?) {
         val ivBack: ImageView = view.findViewById(R.id.tb_ivBack)
         val tvTitle: TextView = view.findViewById(R.id.tb_tvTitle)
         tvTitle.text = title
@@ -81,6 +81,16 @@ open class BaseActivity : AppCompatActivity() {
     ) {
         if (supportFragmentManager != null) {
             val fmTransaction = supportFragmentManager.beginTransaction()
+            if (animation) {
+                fmTransaction.setCustomAnimations(
+                    R.anim.activity_new_in,
+                    R.anim.activity_old_out,
+                    R.anim.activity_old_in,
+                    R.anim.activity_new_out
+                )
+            } else {
+                fmTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+            }
             if (replace) {
                 fmTransaction.replace(R.id.fmContainer, fragment, fragment::class.java.simpleName)
             } else {
@@ -92,16 +102,6 @@ open class BaseActivity : AppCompatActivity() {
             }
             if (addToBackStack) {
                 fmTransaction.addToBackStack(fragment::class.java.simpleName)
-            }
-            if (animation) {
-                fmTransaction.setCustomAnimations(
-                    R.anim.activity_new_in,
-                    R.anim.activity_old_out,
-                    R.anim.activity_old_in,
-                    R.anim.activity_new_out
-                )
-            } else {
-                fmTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
             }
             fmTransaction.commit()
         }

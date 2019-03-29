@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
+import android.view.Gravity
 import com.arch.compsmvvm.R
 import com.arch.compsmvvm.data.remote.response.site.SiteItemResponse
 import com.arch.compsmvvm.databinding.ActivityMainBinding
@@ -12,6 +13,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import com.arch.compsmvvm.presentation.adapter.MenuAdapter
 import com.arch.compsmvvm.presentation.base.BaseAdapter
 import com.arch.compsmvvm.presentation.fragment.main.MainFragment
+import com.arch.compsmvvm.presentation.fragment.question.QuestionFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity(), BaseAdapter.AdapterListener {
@@ -58,7 +60,16 @@ class MainActivity : BaseActivity(), BaseAdapter.AdapterListener {
     }
 
     override fun onItemClick(`object`: Any, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        actMain_dl.closeDrawer(Gravity.START)
+        if (`object` is SiteItemResponse) {
+            if (`object`.apiSiteParameter != "stackoverflow") {
+                addFragment(
+                    QuestionFragment.newInstance(`object`.name!!, `object`.apiSiteParameter!!),
+                    addToBackStack = true,
+                    animation = true
+                )
+            }
+        }
     }
 
     override fun onItemLongClick(`object`: Any, position: Int): Boolean {

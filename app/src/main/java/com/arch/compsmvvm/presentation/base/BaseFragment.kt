@@ -14,6 +14,12 @@ open class BaseFragment: Fragment() {
         }
     }
 
+    fun configToolbar(view: View, title: String?, listener: BaseActivity.BackStackListener?) {
+        if (activity is BaseActivity) {
+            (activity as BaseActivity).configToolbar(view, title, listener)
+        }
+    }
+
     fun setFragmentResult(requestCode: Int, listener: FragmentResultListener?) {
         this.requestCode = requestCode
         this.fmResultListener = listener
