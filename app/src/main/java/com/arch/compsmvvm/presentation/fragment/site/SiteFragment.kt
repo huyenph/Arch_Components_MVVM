@@ -20,10 +20,26 @@ import kotlinx.android.synthetic.main.fragment_site.view.*
 class SiteFragment : BaseFragment(), BaseAdapter.AdapterListener {
     private val vm by viewModel<SiteViewModel>()
     private lateinit var mView: View
-    private lateinit var siteLm: GridLayoutManager
+    private var siteLm: GridLayoutManager? = null
     private var siteAdapter: SiteAdapter? = null
-    private val sites: MutableList<SiteItemResponse> = ArrayList()
+    private var sites: ArrayList<SiteItemResponse>? = null
     private var page = 1
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        vm.siteLive!!.observe(this, Observer {
+            if (it != null) {
+                if (it.size == 0) {
+                    siteAdapter!!.isEndList = true
+                    siteAdapter!!.notifyDataSetChanged()
+                } else {
+                    sites!!.addAll(it)
+                    siteAdapter!!.set(sites!!)
+                    siteAdapter!!.isLoading = true
+                }
+            }
+        })
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentSiteBinding =
@@ -38,23 +54,11 @@ class SiteFragment : BaseFragment(), BaseAdapter.AdapterListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         vm.loadAllSite(page, true)
-        vm.siteLive!!.observe(this, Observer {
-            if (it != null) {
-                if (it.size == 0) {
-                    siteAdapter!!.isEndList = true
-                    siteAdapter!!.notifyDataSetChanged()
-                } else {
-                    sites.addAll(it)
-                    siteAdapter!!.set(sites)
-                    siteAdapter!!.isLoading = true
-                }
-            }
-        })
     }
 
     private fun init() {
         siteLm = GridLayoutManager(context, 2)
-        siteLm.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+        siteLm!!.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(p0: Int): Int {
                 return when (siteAdapter!!.getItemViewType(p0)) {
                     BaseAdapter.TYPE_LOADING -> 2
@@ -62,9 +66,9 @@ class SiteFragment : BaseFragment(), BaseAdapter.AdapterListener {
                 }
             }
         }
-        if (siteAdapter == null) {
-            siteAdapter = SiteAdapter(mView.fmSite_rvContent, siteLm, this)
-        }
+        sites = ArrayList()
+        page = 1
+        siteAdapter = SiteAdapter(mView.fmSite_rvContent, siteLm, this)
         mView.fmSite_rvContent.run {
             layoutManager = siteLm
             adapter = siteAdapter
@@ -72,8 +76,8 @@ class SiteFragment : BaseFragment(), BaseAdapter.AdapterListener {
         }
         mView.fmSite_srl.setOnRefreshListener {
             page = 1
-            sites.clear()
-            siteAdapter!!.set(sites)
+            sites!!.clear()
+            siteAdapter!!.set(sites!!)
             vm.loadAllSite(page, true)
             mView.fmSite_srl.isRefreshing = false
         }

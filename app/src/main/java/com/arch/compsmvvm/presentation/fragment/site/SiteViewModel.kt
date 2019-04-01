@@ -1,6 +1,6 @@
 package com.arch.compsmvvm.presentation.fragment.site
 
-import com.arch.compsmvvm.common.helper.SingleLiveData
+import android.arch.lifecycle.MutableLiveData
 import com.arch.compsmvvm.data.remote.response.site.SiteItemResponse
 import com.arch.compsmvvm.data.remote.response.site.SiteResponse
 import com.arch.compsmvvm.data.repository.Repository
@@ -11,12 +11,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class SiteViewModel(private val repository: Repository): BaseViewModel(repository) {
-    var siteLive: SingleLiveData<MutableList<SiteItemResponse>>? = null
+    var siteLive: MutableLiveData<MutableList<SiteItemResponse>> = MutableLiveData()
 
     fun loadAllSite(page: Int, loading: Boolean) {
         if (loading) showLoading()
-        if (siteLive == null) siteLive = SingleLiveData()
-
         val disposables = repository.getAllSite(page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -24,7 +22,7 @@ class SiteViewModel(private val repository: Repository): BaseViewModel(repositor
                 if (it != null) {
                     val type = object : TypeToken<SiteResponse>() {}.type
                     val site = Gson().fromJson(it, type) as SiteResponse
-                    siteLive!!.value = site.items
+                    siteLive.value = site.items
                 }
                 dismissLoading()
                 hideMessage()

@@ -19,9 +19,9 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class QuestionFragment: BaseFragment(), BaseAdapter.AdapterListener {
     private val vm by viewModel<QuestionViewModel>()
     private lateinit var mView: View
-    private lateinit var questionLm: GridLayoutManager
+    private var questionLm: GridLayoutManager? = null
     private var questionAdapter: QuestionAdapter? = null
-    private val questions: MutableList<QuestionItemResponse> = ArrayList()
+    private var questions: ArrayList<QuestionItemResponse>? = null
     private var siteParam = ""
     private var page = 1
 
@@ -32,6 +32,22 @@ class QuestionFragment: BaseFragment(), BaseAdapter.AdapterListener {
                 putString("param", siteParam)
             }
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        vm.questionLive.observe(this, Observer {
+            if (it != null) {
+                if (it.size == 0) {
+                    questionAdapter!!.isEndList = true
+                    questionAdapter!!.notifyDataSetChanged()
+                } else {
+                    questions!!.addAll(it)
+                    questionAdapter!!.set(questions!!)
+                    questionAdapter!!.isLoading = true
+                }
+            }
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -46,18 +62,6 @@ class QuestionFragment: BaseFragment(), BaseAdapter.AdapterListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         vm.getQuestion(siteParam, page, true)
-        vm.questionLive!!.observe(this, Observer {
-            if (it != null) {
-                if (it.size == 0) {
-                    questionAdapter!!.isEndList = true
-                    questionAdapter!!.notifyDataSetChanged()
-                } else {
-                    questions.addAll(it)
-                    questionAdapter!!.set(questions)
-                    questionAdapter!!.isLoading = true
-                }
-            }
-        })
     }
 
     private fun init() {
@@ -65,10 +69,10 @@ class QuestionFragment: BaseFragment(), BaseAdapter.AdapterListener {
             configToolbar(mView, arguments!!.getString("name", ""), null)
             siteParam = arguments!!.getString("param", "")
         }
+        page = 1
+        questions = ArrayList()
         questionLm = GridLayoutManager(context, 1)
-        if (questionAdapter == null) {
-            questionAdapter = QuestionAdapter(mView.fmQuestion_rvContent, questionLm, this)
-        }
+        questionAdapter = QuestionAdapter(mView.fmQuestion_rvContent, questionLm, this)
         mView.fmQuestion_rvContent.run {
             layoutManager = questionLm
             adapter = questionAdapter
@@ -76,8 +80,8 @@ class QuestionFragment: BaseFragment(), BaseAdapter.AdapterListener {
         }
         mView.fmQuestion_srl.setOnRefreshListener {
             page = 1
-            questions.clear()
-            questionAdapter!!.set(questions)
+            questions!!.clear()
+            questionAdapter!!.set(questions!!)
             vm.getQuestion(siteParam, page, true)
             mView.fmQuestion_srl.isRefreshing = false
         }
