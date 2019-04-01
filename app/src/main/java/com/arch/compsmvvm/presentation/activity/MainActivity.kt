@@ -64,10 +64,10 @@ class MainActivity : BaseActivity(), BaseAdapter.AdapterListener {
         actMain_dl.closeDrawer(Gravity.START)
         if (`object` is SiteItemResponse) {
             if (`object`.apiSiteParameter != "stackoverflow") {
-                addFragment(
+                replaceFragment(
                     QuestionFragment.newInstance(`object`.name!!, `object`.apiSiteParameter!!),
                     addToBackStack = true,
-                    animation = true
+                    animation = false
                 )
             }
         } else if (`object` is String) {

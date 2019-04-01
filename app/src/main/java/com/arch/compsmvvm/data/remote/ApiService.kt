@@ -14,7 +14,7 @@ interface ApiService {
         @Query("pagesize") sort: Int
     ): Observable<JsonObject>
 
-    @GET("questions?key=KCTJhLJ5*JRozzNhBK20og((")
+    @GET("questions?key=KCTJhLJ5*JRozzNhBK20og((&pagesize=10")
     fun requestQuestion(@Query("site") site: String, @Query("page") page: Int): Observable<JsonObject>
 
     @GET("sites?key=KCTJhLJ5*JRozzNhBK20og((")

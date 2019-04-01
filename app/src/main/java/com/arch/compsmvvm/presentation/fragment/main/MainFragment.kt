@@ -23,6 +23,7 @@ class MainFragment : BaseFragment(), BaseAdapter.AdapterListener {
     private var questionAdapter: QuestionAdapter? = null
     private val questions: MutableList<QuestionItemResponse> = ArrayList()
     private var page = 1
+    private lateinit var observer: Observer<MutableList<QuestionItemResponse>>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentMainBinding =
@@ -36,8 +37,7 @@ class MainFragment : BaseFragment(), BaseAdapter.AdapterListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        vm.getQuestion("stackoverflow", page, true)
-        vm.questionLive!!.observe(this, Observer {
+        observer = Observer {
             if (it != null) {
                 if (it.size == 0) {
                     questionAdapter!!.isEndList = true
@@ -48,14 +48,24 @@ class MainFragment : BaseFragment(), BaseAdapter.AdapterListener {
                     questionAdapter!!.isLoading = true
                 }
             }
-        })
+        }
+        vm.getQuestion("stackoverflow", page, true)
+        vm.questionLive!!.observe(this, observer)
     }
 
     private fun init() {
         questionLm = GridLayoutManager(context, 1)
-        if (questionAdapter == null) {
-            questionAdapter = QuestionAdapter(mView.fmMain_rvContent, questionLm, this)
-        }
+        questionAdapter = QuestionAdapter(mView.fmMain_rvContent, questionLm, this)
+//        vm.questionLive = null
+//        vm.questionLive!!.removeObserver(observer)
+//        if (questionAdapter == null) {
+//            questionAdapter = QuestionAdapter(mView.fmMain_rvContent, questionLm, this)
+//        } else {
+////            vm.questionLive = null
+//            page = 1
+//            questions.clear()
+//            questionAdapter!!.set(questions)
+//        }
         mView.fmMain_rvContent.run {
             layoutManager = questionLm
             adapter = questionAdapter

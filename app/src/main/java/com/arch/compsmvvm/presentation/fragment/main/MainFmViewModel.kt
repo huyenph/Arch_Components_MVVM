@@ -1,5 +1,6 @@
 package com.arch.compsmvvm.presentation.fragment.main
 
+import android.arch.lifecycle.MutableLiveData
 import com.arch.compsmvvm.common.helper.SingleLiveData
 import com.arch.compsmvvm.data.remote.response.question.QuestionItemResponse
 import com.arch.compsmvvm.data.remote.response.question.QuestionResponse
@@ -11,11 +12,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class MainFmViewModel(private val repository: Repository) : BaseViewModel(repository) {
-    var questionLive: SingleLiveData<MutableList<QuestionItemResponse>>? = null
+    var questionLive: MutableLiveData<MutableList<QuestionItemResponse>>? = null
 
     fun getQuestion(site: String, page: Int, loading: Boolean) {
         if (loading) showLoading()
-        if (questionLive == null) questionLive = SingleLiveData()
+        if (questionLive == null) questionLive = MutableLiveData()
         val disposables = repository.getQuestion(site, page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

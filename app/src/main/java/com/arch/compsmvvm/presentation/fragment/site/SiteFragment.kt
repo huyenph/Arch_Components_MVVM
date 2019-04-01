@@ -81,7 +81,7 @@ class SiteFragment : BaseFragment(), BaseAdapter.AdapterListener {
 
     override fun onItemClick(`object`: Any, position: Int) {
         if (`object` is SiteItemResponse) {
-            addFragment(
+            replaceFragment(
                 QuestionFragment.newInstance(`object`.name!!, `object`.apiSiteParameter!!),
                 addToBackStack = true,
                 animation = true
