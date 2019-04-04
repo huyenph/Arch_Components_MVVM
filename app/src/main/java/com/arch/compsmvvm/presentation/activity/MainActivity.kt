@@ -40,11 +40,6 @@ class MainActivity : BaseActivity(), BaseAdapter.AdapterListener {
             setHasFixedSize(true)
             adapter = menuAdapter
         }
-
-    }
-
-    override fun onResume() {
-        super.onResume()
         vm.loadMenu(page)
         vm.menuLive!!.observe(this, Observer {
             if (it != null) {
