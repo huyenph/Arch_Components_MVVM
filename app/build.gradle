@@ -9,7 +9,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.arch.compsmvvm"
+        applicationId "com.utildev.compsmvvm"
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
@@ -23,7 +23,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            applicationIdSuffix ".debug"
             debuggable true
         }
     }
@@ -31,8 +30,6 @@ android {
     productFlavors {
         develop {
             dimension "version"
-            applicationIdSuffix ".dev"
-            versionNameSuffix "-dev"
             buildConfigField "String", "API_URL", "\"https://api.stackexchange.com/2.2/\""
         }
         production {
@@ -47,6 +44,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildToolsVersion = '28.0.3'
 }
 
 dependencies {

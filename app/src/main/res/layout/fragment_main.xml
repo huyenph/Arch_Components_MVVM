@@ -4,7 +4,7 @@
         xmlns:bind="http://schemas.android.com/tools">
     <data>
         <variable name="viewModel"
-                  type="com.arch.compsmvvm.presentation.fragment.main.MainFmViewModel"/>
+                  type="com.utildev.compsmvvm.presentation.fragment.main.MainFmViewModel"/>
     </data>
 
     <android.support.design.widget.CoordinatorLayout

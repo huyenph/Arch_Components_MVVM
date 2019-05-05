@@ -4,7 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable name="question"
-                  type="com.arch.compsmvvm.data.remote.response.question.QuestionItemResponse"/>
+                  type="com.utildev.compsmvvm.data.remote.response.question.QuestionItemResponse"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
