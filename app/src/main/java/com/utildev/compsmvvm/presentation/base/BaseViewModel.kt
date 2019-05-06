@@ -1,7 +1,5 @@
 package com.utildev.compsmvvm.presentation.base
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.OnLifecycleEvent
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
@@ -75,6 +73,8 @@ open class BaseViewModel(private val repository: Repository) : ViewModel(), ApiC
         showMessage(REQUEST_ERROR)
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun unsubscribeViewModel() = apiClient.clearCompositeDisposable()
+    override fun onCleared() {
+        super.onCleared()
+        apiClient.dispose()
+    }
 }

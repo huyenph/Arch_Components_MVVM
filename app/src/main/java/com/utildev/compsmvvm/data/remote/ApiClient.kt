@@ -22,8 +22,8 @@ class ApiClient(private val responseListener: ResponseListener) {
         compositeDisposable.add(disposable)
     }
 
-    fun clearCompositeDisposable() {
-        compositeDisposable.clear()
+    fun dispose() {
+        compositeDisposable.dispose()
     }
 
     interface ResponseListener {
