@@ -10,9 +10,6 @@ import android.view.View
 import com.google.gson.JsonObject
 import com.utildev.compsmvvm.data.remote.ApiClient
 import com.utildev.compsmvvm.data.repository.Repository
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
