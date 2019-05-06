@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.view_loadmore.view.*
 class QuestionAdapter(
     recyclerView: RecyclerView,
     layoutManager: GridLayoutManager?,
-    adapterListener: BaseAdapter.AdapterListener?
+    adapterListener: AdapterListener?
 ): BaseAdapter(R.layout.item_question, 0, 0, recyclerView, layoutManager, adapterListener) {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ItemViewHolder) {

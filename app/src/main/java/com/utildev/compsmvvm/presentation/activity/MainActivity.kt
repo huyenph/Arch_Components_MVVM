@@ -34,7 +34,7 @@ class MainActivity : BaseActivity(), BaseAdapter.AdapterListener {
 
     private fun init() {
         addFragment(MainFragment(), addToBackStack = true, animation = false)
-        menuAdapter = MenuAdapter(actMain_rvMenu, 0, R.layout.view_footer_menu, null, this)
+        menuAdapter = MenuAdapter(actMain_rvMenu, null, this)
         actMain_rvMenu.run {
             layoutManager = menuLm
             setHasFixedSize(true)

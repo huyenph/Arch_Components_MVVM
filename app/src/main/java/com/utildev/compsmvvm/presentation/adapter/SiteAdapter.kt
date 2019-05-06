@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.view_loadmore.view.*
 class SiteAdapter(
     recyclerView: RecyclerView,
     layoutManager: GridLayoutManager?,
-    private val adapterListener: BaseAdapter.AdapterListener?
+    private val adapterListener: AdapterListener?
 ) : BaseAdapter(R.layout.item_site, 0, 0, recyclerView, layoutManager, adapterListener) {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ItemViewHolder) {

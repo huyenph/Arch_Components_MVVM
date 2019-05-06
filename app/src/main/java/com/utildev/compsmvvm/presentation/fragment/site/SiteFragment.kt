@@ -27,7 +27,7 @@ class SiteFragment : BaseFragment(), BaseAdapter.AdapterListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        vm.siteLive!!.observe(this, Observer {
+        vm.siteLive.observe(this, Observer {
             if (it != null) {
                 if (it.size == 0) {
                     siteAdapter!!.isEndList = true
@@ -56,6 +56,24 @@ class SiteFragment : BaseFragment(), BaseAdapter.AdapterListener {
         vm.loadAllSite(page, true)
     }
 
+    override fun onItemClick(`object`: Any, position: Int) {
+        if (`object` is SiteItemResponse) {
+            replaceFragment(
+                QuestionFragment.newInstance(`object`.name!!, `object`.apiSiteParameter!!),
+                addToBackStack = true,
+                animation = true
+            )
+        }
+    }
+
+    override fun onItemLongClick(`object`: Any, position: Int): Boolean {
+        return false
+    }
+
+    override fun onLoadMore() {
+        vm.loadAllSite(++page, false)
+    }
+
     private fun init() {
         siteLm = GridLayoutManager(context, 2)
         siteLm!!.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
@@ -81,23 +99,5 @@ class SiteFragment : BaseFragment(), BaseAdapter.AdapterListener {
             vm.loadAllSite(page, true)
             mView.fmSite_srl.isRefreshing = false
         }
-    }
-
-    override fun onItemClick(`object`: Any, position: Int) {
-        if (`object` is SiteItemResponse) {
-            replaceFragment(
-                QuestionFragment.newInstance(`object`.name!!, `object`.apiSiteParameter!!),
-                addToBackStack = true,
-                animation = true
-            )
-        }
-    }
-
-    override fun onItemLongClick(`object`: Any, position: Int): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onLoadMore() {
-        vm.loadAllSite(++page, false)
     }
 }

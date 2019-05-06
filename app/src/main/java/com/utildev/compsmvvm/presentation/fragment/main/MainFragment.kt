@@ -55,6 +55,16 @@ class MainFragment : BaseFragment(), BaseAdapter.AdapterListener {
         vm.getQuestion("stackoverflow", page, true)
     }
 
+    override fun onItemClick(`object`: Any, position: Int) {}
+
+    override fun onItemLongClick(`object`: Any, position: Int): Boolean {
+        return false
+    }
+
+    override fun onLoadMore() {
+        vm.getQuestion("stackoverflow", ++page, false)
+    }
+
     private fun init() {
         questionLm = GridLayoutManager(context, 1)
         questionAdapter = QuestionAdapter(mView.fmMain_rvContent, questionLm, this)
@@ -72,17 +82,5 @@ class MainFragment : BaseFragment(), BaseAdapter.AdapterListener {
             vm.getQuestion("stackoverflow", page, true)
             mView.fmMain_srl.isRefreshing = false
         }
-    }
-
-    override fun onItemClick(`object`: Any, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onItemLongClick(`object`: Any, position: Int): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onLoadMore() {
-        vm.getQuestion("stackoverflow", ++page, false)
     }
 }

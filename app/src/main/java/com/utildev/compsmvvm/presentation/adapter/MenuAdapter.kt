@@ -12,15 +12,14 @@ import kotlinx.android.synthetic.main.view_loadmore.view.*
 
 class MenuAdapter(
     recyclerView: RecyclerView,
-    private val headerRes: Int,
-    footerRes: Int,
     layoutManager: GridLayoutManager?,
-    private val adapterListener: BaseAdapter.AdapterListener?
-) : BaseAdapter(R.layout.item_menu, headerRes, footerRes, recyclerView, layoutManager, adapterListener) {
+    private val adapterListener: AdapterListener?
+) : BaseAdapter(R.layout.item_menu, 0, R.layout.view_footer_menu, recyclerView, layoutManager, adapterListener) {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ItemViewHolder -> {
-                val item: Any = items[if (headerRes != 0) position - 1 else position]
+//                val item: Any = items[if (headerRes != 0) position - 1 else position]
+                val item: Any = items[position]
                 holder.binding.setVariable(BR.menu, item)
                 holder.binding.executePendingBindings()
                 val v = holder.binding.root

@@ -64,6 +64,16 @@ class QuestionFragment: BaseFragment(), BaseAdapter.AdapterListener {
         vm.getQuestion(siteParam, page, true)
     }
 
+    override fun onItemClick(`object`: Any, position: Int) {}
+
+    override fun onItemLongClick(`object`: Any, position: Int): Boolean {
+        return false
+    }
+
+    override fun onLoadMore() {
+        vm.getQuestion(siteParam, ++page, false)
+    }
+
     private fun init() {
         if (arguments != null) {
             configToolbar(mView, arguments!!.getString("name", ""), null)
@@ -85,17 +95,5 @@ class QuestionFragment: BaseFragment(), BaseAdapter.AdapterListener {
             vm.getQuestion(siteParam, page, true)
             mView.fmQuestion_srl.isRefreshing = false
         }
-    }
-
-    override fun onItemClick(`object`: Any, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onItemLongClick(`object`: Any, position: Int): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onLoadMore() {
-        vm.getQuestion(siteParam, ++page, false)
     }
 }
