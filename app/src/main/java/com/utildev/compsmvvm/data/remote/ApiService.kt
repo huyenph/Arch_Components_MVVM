@@ -2,6 +2,7 @@ package com.utildev.compsmvvm.data.remote
 
 import com.google.gson.JsonObject
 import io.reactivex.Observable
+import okhttp3.RequestBody
 import retrofit2.http.*
 
 interface ApiService {
@@ -16,6 +17,9 @@ interface ApiService {
 
     @GET("sites?key=KCTJhLJ5*JRozzNhBK20og((")
     fun requestAllSite(@Query("page") page: Int): Observable<JsonObject>
+
+    @POST("")
+    fun requestBody(@Body body: RequestBody): Observable<JsonObject>
 
 //    @GET("users")
 //    fun requestUser(
