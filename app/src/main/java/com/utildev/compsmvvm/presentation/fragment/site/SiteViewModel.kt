@@ -6,30 +6,21 @@ import com.utildev.compsmvvm.data.remote.response.site.SiteResponse
 import com.utildev.compsmvvm.data.repository.Repository
 import com.utildev.compsmvvm.presentation.base.BaseViewModel
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import java.lang.reflect.Type
 
 class SiteViewModel(private val repository: Repository): BaseViewModel(repository) {
     var siteLive: MutableLiveData<MutableList<SiteItemResponse>> = MutableLiveData()
 
     fun loadAllSite(page: Int, loading: Boolean) {
         if (loading) showLoading()
-        val disposables = repository.getAllSite(page)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                if (it != null) {
-                    val type = object : TypeToken<SiteResponse>() {}.type
-                    val site = Gson().fromJson(it, type) as SiteResponse
-                    siteLive.value = site.items
-                }
-                dismissLoading()
-                hideMessage()
-            }, {
-                dismissLoading()
-                showMessage(it.message!!)
-            })
-        compositeDisposable.add(disposables)
+        apiClient.request(3, object : TypeToken<SiteResponse>() {}.type, repository.getAllSite(page))
+    }
+
+    override fun onSuccess(code: Int, type: Type?, response: JsonObject) {
+        super.onSuccess(code, type, response)
+        val site = Gson().fromJson(response, type) as SiteResponse
+        siteLive.value = site.items
     }
 }

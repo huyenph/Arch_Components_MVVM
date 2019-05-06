@@ -41,7 +41,7 @@ class MainActivity : BaseActivity(), BaseAdapter.AdapterListener {
             adapter = menuAdapter
         }
         vm.loadMenu(page)
-        vm.menuLive!!.observe(this, Observer {
+        vm.menuLive.observe(this, Observer {
             if (it != null) {
                 if (menus.size > 50) {
                     menuAdapter!!.isEndList = true

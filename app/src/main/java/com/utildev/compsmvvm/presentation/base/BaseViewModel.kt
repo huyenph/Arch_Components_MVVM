@@ -1,10 +1,14 @@
 package com.utildev.compsmvvm.presentation.base
 
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.OnLifecycleEvent
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.databinding.ObservableInt
 import android.view.View
+import com.google.gson.JsonObject
+import com.utildev.compsmvvm.data.remote.ApiClient
 import com.utildev.compsmvvm.data.repository.Repository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -13,14 +17,16 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
+import java.lang.reflect.Type
 
-open class BaseViewModel(private val repository: Repository) : ViewModel() {
+@Suppress("LeakingThis")
+open class BaseViewModel(private val repository: Repository) : ViewModel(), ApiClient.ResponseListener {
     val loadingView = ObservableInt(View.GONE)
     val msgView = ObservableInt(View.GONE)
     val msgText: ObservableField<String> = ObservableField()
     val enabledView = ObservableBoolean(false)
 
-    val compositeDisposable = CompositeDisposable()
+    val apiClient = ApiClient(this)
 
     fun showLoading() {
         if (loadingView.get() != View.VISIBLE) {
@@ -58,10 +64,17 @@ open class BaseViewModel(private val repository: Repository) : ViewModel() {
             file.absolutePath,
             RequestBody.create(MediaType.parse("multipart/form_data"), file)
         )
-        val disposables = repository.requestBody(builder.build())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({}, {})
-        compositeDisposable.add(disposables)
+        apiClient.request(6, null, repository.requestBody(builder.build()))
     }
+
+    override fun onSuccess(code: Int, type: Type?, response: JsonObject) {
+        dismissLoading()
+    }
+
+    override fun onFailure() {
+        dismissLoading()
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun unsubscribeViewModel() = apiClient.clearCompositeDisposable()
 }
