@@ -11,6 +11,8 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import com.utildev.compsmvvm.R
+import com.utildev.compsmvvm.common.extensions.isNetworkAvailable
+import com.utildev.compsmvvm.presentation.fragment.other.NotConnectionFragment
 
 @SuppressLint("Registered")
 open class BaseActivity : AppCompatActivity() {
@@ -108,11 +110,21 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     fun replaceFragment(fragment: BaseFragment, addToBackStack: Boolean, animation: Boolean) {
-        transactionFragment(fragment, true, addToBackStack, animation)
+        transactionFragment(
+            if (isNetworkAvailable(this)) fragment else NotConnectionFragment(),
+            true,
+            addToBackStack,
+            animation
+        )
     }
 
     fun addFragment(fragment: BaseFragment, addToBackStack: Boolean, animation: Boolean) {
-        transactionFragment(fragment, false, addToBackStack, animation)
+        transactionFragment(
+            if (isNetworkAvailable(this)) fragment else NotConnectionFragment(),
+            false,
+            addToBackStack,
+            animation
+        )
     }
 
     fun clearAllStack() {

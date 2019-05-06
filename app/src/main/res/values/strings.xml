@@ -4,4 +4,6 @@
     <string name="close_navigation">Close navigation</string>
     <string name="all_sites">All Sites</string>
     <string name="no_data">No data</string>
+    <string name="msg_not_connection">Không có kết nối Internet</string>
+    <string name="try_again">Thử lại</string>
 </resources>

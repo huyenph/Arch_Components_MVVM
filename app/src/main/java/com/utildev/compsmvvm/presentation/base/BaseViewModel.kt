@@ -8,6 +8,7 @@ import android.databinding.ObservableField
 import android.databinding.ObservableInt
 import android.view.View
 import com.google.gson.JsonObject
+import com.utildev.compsmvvm.common.extensions.REQUEST_ERROR
 import com.utildev.compsmvvm.data.remote.ApiClient
 import com.utildev.compsmvvm.data.repository.Repository
 import okhttp3.MediaType
@@ -21,7 +22,7 @@ open class BaseViewModel(private val repository: Repository) : ViewModel(), ApiC
     val loadingView = ObservableInt(View.GONE)
     val msgView = ObservableInt(View.GONE)
     val msgText: ObservableField<String> = ObservableField()
-    val enabledView = ObservableBoolean(false)
+    private val enabledView = ObservableBoolean(false)
 
     val apiClient = ApiClient(this)
 
@@ -32,7 +33,7 @@ open class BaseViewModel(private val repository: Repository) : ViewModel(), ApiC
         }
     }
 
-    fun dismissLoading() {
+    private fun dismissLoading() {
         if (loadingView.get() != View.GONE) {
             loadingView.set(View.GONE)
             enabledView.set(true)
@@ -66,10 +67,12 @@ open class BaseViewModel(private val repository: Repository) : ViewModel(), ApiC
 
     override fun onSuccess(code: Int, type: Type?, response: JsonObject) {
         dismissLoading()
+        hideMessage()
     }
 
     override fun onFailure() {
         dismissLoading()
+        showMessage(REQUEST_ERROR)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
