@@ -70,14 +70,18 @@ open class BaseAdapter(
             when (mItemCount) {
                 3 -> {
                     when (position) {
-                        0 -> TYPE_HEADER
-                        1 -> TYPE_FOOTER
+                        0 -> when {
+                            headerRes != 0 -> TYPE_HEADER
+                            footerRes != 0 -> TYPE_FOOTER
+                            else -> position
+                        }
+                        1 -> if (footerRes != 0) TYPE_FOOTER else position
                         else -> TYPE_BLANK
                     }
                 }
                 2 -> {
                     when (position) {
-                        0 -> if (headerRes != 0) TYPE_HEADER else TYPE_FOOTER
+                        0 -> if (headerRes != 0) TYPE_HEADER else if (footerRes != 0) TYPE_FOOTER else position
                         else -> TYPE_BLANK
                     }
                 }
@@ -93,8 +97,18 @@ open class BaseAdapter(
             }
         } else {
             when (mItemCount) {
-                2 -> if (position == 0) TYPE_HEADER else TYPE_FOOTER
-                1 -> if (headerRes != 0) TYPE_HEADER else TYPE_FOOTER
+                2 -> {
+                    if (position == 0) {
+                        when {
+                            headerRes != 0 -> TYPE_HEADER
+                            footerRes != 0 -> TYPE_FOOTER
+                            else -> position
+                        }
+                    } else {
+                        if (footerRes != 0) TYPE_FOOTER else position
+                    }
+                }
+                1 -> if (headerRes != 0) TYPE_HEADER else if (footerRes != 0) TYPE_FOOTER else position
                 else -> {
                     when (position) {
                         0 -> if (headerRes != 0) TYPE_HEADER else position
